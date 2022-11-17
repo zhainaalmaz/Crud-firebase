@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
 import Title from "./components/Title";
@@ -29,8 +28,14 @@ function App() {
     return () => unsub();
   }, []);
 
-  const handleEdit = async (todo, title) => {
-    await updateDoc(doc(db, "todos", todo.id), { title: title });
+  const handleEdit = async (todo) => {
+    await updateDoc(doc(db, "todos", todo.id), {
+      title: todo.title,
+      // completed: todo?.completed,
+      // imgUrl: todo.file,
+      // startDate: todo.startDate,
+      // endDate: todo.endDate,
+    });
   };
   const toggleComplete = async (todo) => {
     await updateDoc(doc(db, "todos", todo.id), { completed: !todo.completed });

@@ -1,44 +1,52 @@
-import React from "react";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-export default function Todo({ todo, toggleComplete, handleDelete, handleEdit,}) {
-  const [newTitle, setNewTitle] = React.useState(todo.title);
+/* eslint-disable jsx-a11y/img-redundant-alt */
+import React, { useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { ModalOverlay } from "../ui/ModalOverlay";
+
+export default function Todo({
+  todo,
+  toggleComplete,
+  handleDelete,
+  handleEdit,
+}) {
+  const [active, setActive] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
     if (todo.complete === true) {
-      setNewTitle(todo.title);
+      setActive(false);
     } else {
-      todo.title = "";
-      setNewTitle(e.target.value);
+      setActive(true);
     }
   };
+
   return (
-    <div className="todo">
+    <div className="todo" onClick={handleChange}>
       <input
         style={{ textDecoration: todo.completed && "line-through" }}
         type="text"
-        value={todo.title === "" ? newTitle : todo.title}
+        value={todo.title}
         className="list"
-        onChange={handleChange}
       />
+
       <div>
+        <img src={todo.imgUrl} alt="upload photo" width={100} />
         <button
           className="button-complete"
           onClick={() => toggleComplete(todo)}
         >
-          <CheckCircleIcon id="i" />
+          <p>check</p>
         </button>
-        <button
-          className="button-edit"
-          onClick={() => handleEdit(todo, newTitle)}
-        >
-          <EditIcon id="i" />
+        <button className="button-edit" onClick={() => handleEdit(todo)}>
+          <p>edit</p>
         </button>
         <button className="button-delete" onClick={() => handleDelete(todo.id)}>
-          <DeleteIcon id="i" />
+          <p>delete</p>
         </button>
+
+        <p>{todo?.startDate}</p>
+        <p>{todo?.endDate}</p>
+        {active && <ModalOverlay todo={todo} />}
       </div>
     </div>
   );
